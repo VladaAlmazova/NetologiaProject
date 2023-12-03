@@ -1,10 +1,12 @@
 package ru.netology.vlada.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.SplittableRandom;
 
-@Data
+//@Data
+//@EqualsAndHashCode(callSuper=false)
 public class Operation implements ConsolePrintable{
     private int id;
     private int sum;

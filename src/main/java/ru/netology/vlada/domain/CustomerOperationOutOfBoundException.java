@@ -14,6 +14,6 @@ public class CustomerOperationOutOfBoundException extends OperationException {
 
     @Override
     public String getMessage() {
-        return MESSAGE.formatted(operationId, customerId);
+        return "Exception while trying to save operation "+ operationId+" for customer "+customerId;//MESSAGE.formatted(operationId, customerId);
     }
 }

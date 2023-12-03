@@ -1,8 +1,10 @@
 package ru.netology.vlada.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class CashbackOperation extends Operation implements ConsolePrintable{
     private int cashbackAmount;
 

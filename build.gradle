@@ -7,11 +7,14 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.30'//24
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'//30-24
 }
 tasks.jar {
     manifest.attributes["Main-Class"] = "ru.netology.vlada.Main"
 }
-sourceCompatibility = JavaVersion.VERSION_15
-targetCompatibility = JavaVersion.VERSION_15
+test {
+    useJUnitPlatform()
+}
+//sourceCompatibility = JavaVersion.VERSION_15
+//targetCompatibility = JavaVersion.VERSION_15
