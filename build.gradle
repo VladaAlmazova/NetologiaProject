@@ -5,16 +5,48 @@ repositories {
     mavenCentral()
 }
 dependencies {
+//    compileOnly 'org.projectlombok:lombok:1.18.30'//24
+    implementation 'org.projectlombok:lombok:1.18.30'
+    implementation 'junit:junit:4.13.1'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+    implementation 'org.springframework:spring-context:5.3.23'
 
-    compileOnly 'org.projectlombok:lombok:1.18.30'//24
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'//30-24
+//    testImplementation(platform('org.junit:junit-bom:5.9.0'))
+//    testImplementation('org.junit.jupiter:junit-jupiter')
 }
 tasks.jar {
     manifest.attributes["Main-Class"] = "ru.netology.vlada.Main"
 }
 test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        exceptionFormat "full"
+    }
     useJUnitPlatform()
 }
 //sourceCompatibility = JavaVersion.VERSION_15
 //targetCompatibility = JavaVersion.VERSION_15
+
+//plugins {
+//    id 'java'
+//    id 'org.springframework.boot' version '2.7.4'
+//    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+//}
+//repositories {
+//    mavenCentral()
+//}
+//
+//sourceCompatibility = '17'
+//
+//dependencies {
+//    implementation 'org.projectlombok:lombok:1.18.26'
+//    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+//    implementation 'org.springframework:spring-context:5.3.9'
+//    implementation 'org.springframework.boot:spring-boot-starter'
+//    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//}
+//test {
+//    useJUnitPlatform()
+//}
