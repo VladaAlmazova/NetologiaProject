@@ -1,27 +1,27 @@
 package ru.netology.vlada.service;
 
-//import jdk.internal.access.JavaIOFileDescriptorAccess;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 import ru.netology.vlada.domain.ContactingCustomerException;
-import ru.netology.vlada.domain.Customer;
 import ru.netology.vlada.domain.CustomerOperationOutOfBoundException;
 import ru.netology.vlada.domain.Operation;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import static ru.netology.vlada.Main.operationStorageService;
-import static ru.netology.vlada.Main.OPERATIONS_PER_CUSTOMER;
-//import static ru.netology.vlada.Main.customerService;
-//import static ru.netology.vlada.service.StorageService.*;
 
 //работа с выпиской
+@Component
+@Data
 public class StatementService {
+    private final int OPERATIONS_PER_CUSTOMER = 100;
     private final Map<Integer, List<Operation>> storage = new HashMap<>();
 
-    public void Save_many_statement(int customerId, Operation[] operations) throws CustomerOperationOutOfBoundException, ContactingCustomerException {
-//        storage.putIfAbsent(customerId, new ArrayList<>());
+    public void Save_many_statement(int customerId, Operation[] operations)
+            throws CustomerOperationOutOfBoundException, ContactingCustomerException {
         for(Operation operation : operations) {
             Save_statement(customerId, operation);
         }
@@ -48,4 +48,34 @@ public class StatementService {
         return storage.get(clientId);
     }
 
+    public void delStorage(int idCustomer, int id) {
+        storage.get(idCustomer).remove(getIndexOperation(idCustomer, id));
+    }
+
+    public int getIndexOperation(int customerId, int operationId) {
+        List<Operation> listOperations = storage.get(customerId);
+        int ind = 0;
+        for(Operation operation : listOperations){
+            if(operation.getId() == operationId)
+                return ind;
+            ind++;
+        }
+        return -1; //TODO добавить ошибку
+    }
+
+    @PostConstruct
+    public void initStorage() throws CustomerOperationOutOfBoundException, ContactingCustomerException {
+        Save_statement(1, new Operation(11, 1005, "USD", "Nike"));
+//        Save_statement(1, new Operation(20, 100, "USD", "Zara"));
+        Save_statement(2, new Operation(5, 200, "EVR", "Amazon"));
+        Save_statement(2, new Operation(9, 450, "RUR", "Ozon"));
+//        Save_statement(2, new Operation(50, 856, "RUR", "Ford"));
+//        Save_statement(2, new Operation(41, 50, "EVR", "Samsung"));
+    }
+
+
+//    public List<Operation> getAllOperations(){ //del?
+//
+//        return new ArrayList<Operation>(storage.values());
+//    }
 }

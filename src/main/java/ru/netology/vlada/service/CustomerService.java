@@ -1,32 +1,56 @@
 package ru.netology.vlada.service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.netology.vlada.domain.Customer;
-import ru.netology.vlada.Main;
 import ru.netology.vlada.domain.CustomerCreationException;
-import ru.netology.vlada.domain.CustomerOperationOutOfBoundException;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 //import static ru.netology.vlada.service.StorageService.ActiveCustomersId;
 //import static ru.netology.vlada.Main.customerStorageService;
-import static ru.netology.vlada.Main.MAX_CUSTOMERS;
+//import static ru.netology.vlada.OperationHistoryApiApplication.MAX_CUSTOMERS;
 //import static ru.netology.vlada.Main.statementService;
 //import static ru.netology.vlada.service.StorageService.*;
 
+@Component
+@AllArgsConstructor
 public class CustomerService {
-
-    private final ArrayList<Customer> customers = new ArrayList<>();//[MAX_CUSTOMERS];
+    private final int MAX_CUSTOMERS = 10;
+    private final ArrayList<Customer> customers = new ArrayList<>();//[MAX_CUSTOMERS]; //TODO убрать
+    private final Map<Integer, Customer> mapCustomers = new HashMap<>();
 
     public ArrayList<Customer> getCustomers() {
-        return customers;
+        //return customers;
+        return new ArrayList<>(mapCustomers.values());
     }
+
     public void setCustomers(Customer customer) throws CustomerCreationException {
         if(customer.getId() < MAX_CUSTOMERS && customer.getId()>=0
                 && !customers.contains(customer)){
             customers.add(customer);
+            mapCustomers.put(customer.getId(), customer);
         }
         else throw new CustomerCreationException(customer.getId());
+    }
+
+    public Customer getCustomer(int id) {
+        return mapCustomers.get(id);
+    }
+
+    @PostConstruct
+    public void initStorage() {
+        mapCustomers.put(1, new Customer(1, "Spring"));
+        mapCustomers.put(2, new Customer(2, "Boot"));
+//        customers.add(new Customer(1, "Spring"));
+//        customers.add(new Customer(2, "Boot"));
+    }
+
+    public void setCustomer(Customer customer) {
+        mapCustomers.put(customer.getId(), customer);
     }
 
 //    public static void inputCustomers(Scanner scanner) throws CustomerOperationOutOfBoundException { //было приватным

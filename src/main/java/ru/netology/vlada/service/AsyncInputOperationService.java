@@ -3,16 +3,25 @@ package ru.netology.vlada.service;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.springframework.stereotype.Component;
 import ru.netology.vlada.domain.Operation;
+
+import javax.annotation.PostConstruct;
+
+import ru.netology.vlada.configuration.OperationProperties;
 
 //import static jdk.internal.vm.PostVMInitHook.run;
 
+@Component
 public class AsyncInputOperationService {
-    private Queue<Operation> operations = new LinkedList<>();
-    private StatementService statementService;
+    private final Queue<Operation> operations = new LinkedList<>();
+    private final StatementService statementService;
 
-    public AsyncInputOperationService(StatementService statementService){
+    private final OperationProperties operationProperties;
+
+    public AsyncInputOperationService(StatementService statementService, OperationProperties operationProperties) {
         this.statementService = statementService;
+        this.operationProperties = operationProperties;
     }
 
 
@@ -21,7 +30,7 @@ public class AsyncInputOperationService {
         return operations.offer(operation);
     }
 
-    public void startProcessing(){
+    public void startProcessing() {
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -37,23 +46,25 @@ public class AsyncInputOperationService {
             if (operation == null) {
                 try {
                     System.out.println("Waiting for next operation in queue");
-                    Thread.sleep(1_000);
+                    Thread.sleep(operationProperties.sleepMilliSeconds);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 //TODO подождать следующую операцию
-            }
-            else {
+            } else {
                 System.out.println("Processing operation:" + operation);
                 processOperation(operation);
             }
         }
     }
-
-    private void processOperation(Operation operation){
-
+    private void processOperation(Operation operation) {
     }
 
+    @PostConstruct
+    public void init(){
+        this.startProcessing();
+    }
+}
 
 
 //    private Queue<Operation> queueOperationsToSave = new LinkedList<>();
@@ -97,4 +108,4 @@ public class AsyncInputOperationService {
 //        t.start();
 //    }
 
-}
+//}

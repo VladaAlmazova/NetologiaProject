@@ -8,10 +8,10 @@ import java.util.SplittableRandom;
 @Data
 //@EqualsAndHashCode(callSuper=false)
 public class Operation implements ConsolePrintable{
-    private int id;
-    private int sum;
-    private String currency; //валюта
-    private String merchant; //куда отдали деньги
+    private final int id;
+    private final int sum;
+    private final String currency; //валюта
+    private final String merchant; //куда отдали деньги
 
     public Operation(int id, int sum, String currency, String merchant)
     {
@@ -68,37 +68,5 @@ public class Operation implements ConsolePrintable{
 
     public static void print(Operation operation){
         System.out.println(operation);
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setSum(int sum) {
-        this.sum = sum;
-    }
-
-    public int getSum() {
-        return sum;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setMerchant(String merchant) {
-        this.merchant = merchant;
-    }
-
-    public String getMerchant() {
-        return merchant;
     }
 }
